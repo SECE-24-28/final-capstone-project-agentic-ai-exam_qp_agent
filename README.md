@@ -77,6 +77,7 @@ Deployment:
 * Pandas
 * NumPy
 
+
 ### Tools
 
 * VS Code
@@ -141,6 +142,7 @@ docker-compose up --build
 Priyavarshini V
 Shubhaharini S
 Swetha P
+
 
 ## License
 
