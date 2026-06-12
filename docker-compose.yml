@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: exam-generator-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - exam-db-data:/app/data
+    environment:
+      - ENV=production
+    restart: always
+
+  frontend:
+    build: ./frontend
+    container_name: exam-generator-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: always
+
+volumes:
+  exam-db-data:
