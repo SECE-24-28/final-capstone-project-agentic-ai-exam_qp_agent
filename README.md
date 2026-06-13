@@ -1,97 +1,281 @@
 [![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-22041afd0340ce965d47ae6ef1cefeee28c7c493a6346c4f15d667ab976d596c.svg)](https://classroom.github.com/a/s7J27iqd)
-
-
-# Agentic AI Exam Question Paper Generator
+# 📚 Agentic AI Question Paper Generator
 
 ## Overview
 
-The Agentic AI Exam Question Paper Generator is an intelligent system that automatically generates examination question papers from user-provided topics, syllabi, or learning materials. The project leverages Agentic AI workflows and Large Language Models (LLMs) to create structured, balanced, and customizable question papers while maintaining academic standards and difficulty distribution.
+The Agentic AI Question Paper Generator is an intelligent system that automatically generates structured examination question papers from uploaded study materials such as lecture notes, subject notes, and lesson PDFs.
+
+The system uses a multi-agent architecture combined with Retrieval-Augmented Generation (RAG) to analyze educational content and generate question papers according to predefined examination templates.
+
+---
 
 ## Features
 
-* Automated question paper generation using AI
-* Support for multiple subjects and domains
-* Difficulty-level customization (Easy, Medium, Hard)
-* Bloom's Taxonomy-based question generation
-* Topic-wise weightage allocation
-* Multiple question formats:
+* Upload PDF study materials
+* Automatic content extraction
+* Topic and concept analysis
+* ChromaDB-based RAG pipeline
+* AI-powered question generation
+* Multiple examination templates
+* Custom mark distribution
+* Streamlit-based user interface
+* FastAPI backend services
+* CPU-friendly deployment using Ollama
 
-  * Multiple Choice Questions (MCQs)
-  * Short Answer Questions
-  * Long Answer Questions
-  * Descriptive Questions
-* Custom marks distribution
-* Export generated papers to PDF
-* Faculty review and editing support
-* Question bank management
-* AI-powered validation and duplication checks
-
-## Agentic AI Workflow
-
-1. User provides syllabus, topics, or reference material.
-2. AI Agent analyzes the content.
-3. Topic Extraction Agent identifies key concepts.
-4. Difficulty Planning Agent allocates questions across levels.
-5. Question Generation Agent creates questions.
-6. Review Agent validates quality, relevance, and duplication.
-7. Formatting Agent structures the final question paper.
-8. Export Agent generates downloadable output.
+---
 
 ## System Architecture
 
-Frontend:
+```text
+Teacher Uploads Notes
+          │
+          ▼
+Document Agent
+          │
+          ▼
+Analysis Agent
+          │
+          ▼
+RAG Ingestion
+          │
+          ▼
+ChromaDB Vector Store
+          │
+          ▼
+Retriever
+          │
+          ▼
+Question Generation Agent
+          │
+          ▼
+Template Agent
+          │
+          ▼
+Paper Agent
+          │
+          ▼
+Final Question Paper
+```
 
-* React.js / HTML / CSS / JavaScript
+---
 
-Backend:
+## Agents Used
 
-* Python (FastAPI / Flask)
+### 1. Document Agent
 
-AI Layer:
+Responsibilities:
 
-* OpenAI GPT Models / LLM APIs
-* LangChain
-* Agentic Workflow Engine
+* Read uploaded PDF files
+* Extract text content
+* Prepare content for downstream processing
 
-Database:
+### 2. Analysis Agent
 
-* MySQL / PostgreSQL
+Responsibilities:
 
-Deployment:
+* Extract important topics
+* Identify key concepts
+* Determine content difficulty
+* Find question-worthy sections
 
-* Docker
-* Docker Compose
+### 3. Question Agent
 
-## Tech Stack
+Responsibilities:
 
-### Programming Languages
+* Generate questions from retrieved context
+* Follow mark distribution requirements
+* Generate questions according to selected template
 
-* Python
-* JavaScript
+### 4. Paper Agent
 
-### Frameworks & Libraries
+Responsibilities:
 
-* FastAPI / Flask
-* React.js
-* LangChain
-* Pandas
-* NumPy
+* Assemble generated questions
+* Apply selected examination format
+* Generate final question paper
 
+---
 
-### Tools
+## RAG Pipeline
 
-* VS Code
-* GitHub
-* Docker
-* Jupyter Notebook
+### Step 1: Content Extraction
+
+PDF notes are converted into raw text using PyPDF.
+
+### Step 2: Chunking
+
+The extracted text is divided into smaller chunks for efficient retrieval.
+
+### Step 3: Embedding Generation
+
+Embeddings are generated using:
+
+* BGE Base Embedding Model
+
+```text
+hf.co/CompendiumLabs/bge-base-en-v1.5-gguf:latest
+```
+
+### Step 4: Vector Storage
+
+Embeddings are stored inside ChromaDB.
+
+### Step 5: Retrieval
+
+Relevant chunks are retrieved based on subject and question generation requirements.
+
+### Step 6: Question Generation
+
+Retrieved context is passed to the language model to generate examination questions.
+
+---
+
+## Models Used
+
+### LLM
+
+```text
+hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:latest
+```
+
+Purpose:
+
+* Topic Analysis
+* Question Generation
+* Examination Paper Creation
+
+### Embedding Model
+
+```text
+hf.co/CompendiumLabs/bge-base-en-v1.5-gguf:latest
+```
+
+Purpose:
+
+* Text Embeddings
+* Semantic Search
+* Context Retrieval
+
+---
+
+## Question Paper Templates
+
+### Anna University Template
+
+```text
+PART - A
+1 Mark Questions
+
+PART - B
+2 Mark Questions
+
+PART - C
+5 Mark Questions
+
+PART - D
+10 Mark Questions
+```
+
+### CBSE Template
+
+```text
+SECTION A
+1 Mark Questions
+
+SECTION B
+2 Mark Questions
+
+SECTION C
+5 Mark Questions
+
+SECTION D
+10 Mark Questions
+```
+
+### School / College Template
+
+```text
+I.
+1 Mark Questions
+
+II.
+2 Mark Questions
+
+III.
+5 Mark Questions
+
+IV.
+10 Mark Questions
+```
+
+---
+
+## Supported Mark Categories
+
+* 1 Mark
+* 2 Marks
+* 3 Marks
+* 5 Marks
+* 7 Marks
+* 10 Marks
+
+Users can customize the number of questions in each category.
+
+---
+
+## Project Structure
+
+```text
+exam-paper-agent/
+
+├── backend/
+│   ├── app.py
+│   │
+│   ├── agents/
+│   │   ├── document_agent.py
+│   │   ├── analysis_agent.py
+│   │   ├── question_agent.py
+│   │   ├── paper_agent.py
+│   │   └── template_agent.py
+│   │
+│   ├── rag/
+│   │   ├── embedding.py
+│   │   ├── ingest.py
+│   │   ├── retriever.py
+│   │   └── vectorstore.py
+│   │
+│   ├── prompts/
+│   │   ├── anna_template.txt
+│   │   ├── cbse_template.txt
+│   │   └── school_template.txt
+│   │
+│   └── uploads/
+│
+├── frontend/
+│   └── streamlit_app.py
+│
+├── chroma_db/
+│
+├── requirements.txt
+│
+└── README.md
+```
+
+---
 
 ## Installation
 
-### Clone Repository
+### Create Virtual Environment
 
 ```bash
-git clone https://github.com/yourusername/agentic-ai-question-generator.git
-cd agentic-ai-question-generator
+python -m venv venv
+```
+
+### Activate Environment
+
+```bash
+venv\Scripts\activate
+>>>>>>> 3c70d23 (Frontend files,testing codes and template_agents code are committed)
 ```
 
 ### Install Dependencies
@@ -99,51 +283,92 @@ cd agentic-ai-question-generator
 ```bash
 pip install -r requirements.txt
 ```
+---
 
-### Run Application
+## Ollama Setup
 
-```bash
-python app.py
-```
-
-### Docker Deployment
+Pull the required models:
 
 ```bash
-docker-compose up --build
+ollama pull hf.co/bartowski/Llama-3.2-1B-Instruct-GGUF:latest
 ```
 
-## Usage
+```bash
+ollama pull hf.co/CompendiumLabs/bge-base-en-v1.5-gguf:latest
+```
 
-1. Upload syllabus or enter topics.
-2. Select examination type.
-3. Configure marks distribution.
-4. Choose difficulty levels.
-5. Generate question paper.
-6. Review and download output.
+Start Ollama:
+
+```bash
+ollama serve
+```
+
+---
+
+## Running the Backend
+
+```bash
+cd backend
+
+uvicorn app:app --reload
+```
+
+Backend URL:
+
+```text
+http://127.0.0.1:8000
+```
+
+Swagger Documentation:
+
+```text
+http://127.0.0.1:8000/docs
+```
+
+---
+
+## Running the Frontend
+
+```bash
+cd frontend
+
+streamlit run streamlit_app.py
+```
+
+---
 
 ## Future Enhancements
 
-* Adaptive question generation
-* Multi-language support
-* Institution-specific templates
-* Automatic answer key generation
-* Question quality scoring
-* LMS integration
+* DOCX support
+* PDF export
+* Bloom's Taxonomy integration
+* Difficulty balancing
+* Duplicate question detection
+* Previous year question avoidance
+* Automatic template extraction from uploaded question papers
+* Multi-subject examination paper generation
 
-## Project Outcomes
+---
 
-* Reduces manual effort in question paper preparation
-* Ensures balanced assessment coverage
-* Supports scalable academic content generation
-* Enhances consistency and fairness in examinations
+## Technology Stack
 
-## Authors
+* Python
+* FastAPI
+* Streamlit
+* Ollama
+* ChromaDB
+* LangChain
+* PyPDF
+* RAG Architecture
+* Agentic AI
 
-Priyavarshini V
-Shubhaharini S
-Swetha P
+---
 
+## Author
 
-## License
+Developed as an Agentic AI educational application for automated examination question paper generation using Retrieval-Augmented Generation and Multi-Agent Architecture.
 
-This project is developed for educational and research purposes.
+## Team members
+ Priyavarshini V
+ Swetha P
+ Shubhaharini S
